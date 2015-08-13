@@ -7,9 +7,10 @@ static unsigned int cnt = 1;
 
 static void timer_function(unsigned long data)
 {
-	printk("expired jiffies: %lu\n", jiffies);
+	printk("%lu expired jiffies: %lu\n", data, jiffies);
 
 	cnt++;
+	demo_timer.data = cnt;
 	mod_timer(&demo_timer, jiffies + cnt * HZ);
 }
 
@@ -20,11 +21,16 @@ static int __init demo_init(void)
 	init_timer(&demo_timer);
 
 	demo_timer.expires = jiffies + 1 * HZ;
-	demo_timer.data = 0;
+	demo_timer.data = cnt;
 	demo_timer.function = timer_function;
 
 	printk("init jiffies: %lu\n", jiffies);
 	add_timer(&demo_timer);
+
+	if (timer_pending(&demo_timer))
+		printk("demo_timer pending\n");
+	else
+		add_timer(&demo_timer); /* never called */
 
 	return 0;
 }
