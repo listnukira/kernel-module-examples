@@ -3,13 +3,13 @@
 
 static int __init demo_init(void)
 {
-	printk("demo_init\n");
+	printk("demo_module: demo_init\n");
 	return 0;
 }
 
 static void __exit demo_exit(void)
 {
-	printk("demo_exit\n");
+	printk("demo_module: demo_exit\n");
 }
 
 module_init(demo_init);
